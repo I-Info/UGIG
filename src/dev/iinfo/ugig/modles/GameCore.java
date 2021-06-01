@@ -132,6 +132,7 @@ public class GameCore {
     public void restart(int maxGuessTimes) throws IllegalArgumentException {
         if (maxGuessTimes < 1)
             throw new IllegalArgumentException("the maximum number cannot less than 1");
+        this.maxGuessTimes = maxGuessTimes;
         guessedTimes = 0;
         histories.clear();
         Random random = new Random();
