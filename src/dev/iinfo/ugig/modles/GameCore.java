@@ -3,6 +3,9 @@ package dev.iinfo.ugig.modles;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * the core of the guess number game
+ */
 public class GameCore {
 
     /**
@@ -10,13 +13,6 @@ public class GameCore {
      */
     private static final int DEFAULT_MAX_TIMES = 20;
 
-    /**
-     * State codes
-     */
-    public static final int OK = 0;
-    public static final int SUCCESS = 1;
-    public static final int FAIL = -1;
-    public static final int REPEAT = -2;
 
     /**
      * the secret number
@@ -31,7 +27,7 @@ public class GameCore {
     /**
      * the maximum number of guess
      */
-    private final int maxGuessTimes;
+    private int maxGuessTimes;
 
     /**
      * store GameRecord history
@@ -57,41 +53,37 @@ public class GameCore {
         this.maxGuessTimes = maxGuessTimes;
         guessedTimes = 0;
         histories = new ArrayList<>();
-        secretNumber = new Random().nextInt(9000) + 1000;
+        Random random = new Random();
+        secretNumber = 0;
+        for (int i = 0; i < 4; i++) {
+            secretNumber = secretNumber * 10 + random.nextInt(9) + 1;
+        }
     }
 
 
     /**
      * @param guessNumber the guess number
-     * @param result      return the guess result record
-     * @return 0: OK, one standard guess
-     * 1: SUCCESS, guess totally right, game finished
-     * -1: FAIL, Reached maximum guess times, game over
-     * -2: REPEAT, number has been guessed
+     * @return guess result
      * @throws IllegalArgumentException illegal guess number
      */
-    public int guess(int guessNumber, GameRecord result) throws IllegalArgumentException {
-        if (guessNumber > 9999 || guessNumber < 1000) {
+    public GameGuessResult guess(int guessNumber) throws IllegalArgumentException {
+        if (guessNumber > 9999 || guessNumber < 1111) {
             throw new IllegalArgumentException("illegal guess number");
         }
 
         // Guess totally right, game finished
         if (guessNumber == secretNumber) {
-            result = new GameRecord(guessNumber, 4, 0);
-            return SUCCESS;
+            return new GameGuessResult(GameGuessResult.SUCCESS, guessNumber, 4, 0);
         }
 
         // Check if has been guessed
-        for (GameRecord history :
-                histories) {
+        for (GameRecord history : histories) {
             if (history.number == guessNumber) {
-                result = history;
-                return REPEAT;
+                return new GameGuessResult(GameGuessResult.DUPLICATE, history);
             }
         }
 
         // Standard check
-
         boolean[] status = new boolean[4];
         int recordA = 0;
         int recordB = 0;
@@ -116,24 +108,37 @@ public class GameCore {
             }
         }
 
-        // Build result
-        result = new GameRecord(guessNumber, recordA, recordB);
-
+        GameRecord gameRecord = new GameRecord(guessNumber, recordA, recordB);
         // Reached maximum guess times, game over
         if (++guessedTimes >= maxGuessTimes)
-            return FAIL;
+            return new GameGuessResult(GameGuessResult.FAIL, gameRecord);
 
         // Standard guess situation
-        return OK;
+        histories.add(gameRecord);
+        return new GameGuessResult(GameGuessResult.OK, gameRecord);
+    }
+
+
+    /**
+     * Default restart method
+     */
+    public void restart() {
+        restart(maxGuessTimes);
     }
 
     /**
      * restart the game
      */
-    public void restart() {
+    public void restart(int maxGuessTimes) throws IllegalArgumentException {
+        if (maxGuessTimes < 1)
+            throw new IllegalArgumentException("the maximum number cannot less than 1");
         guessedTimes = 0;
         histories.clear();
-        secretNumber = new Random().nextInt(9000) + 1000;
+        Random random = new Random();
+        secretNumber = 0;
+        for (int i = 0; i < 4; i++) {
+            secretNumber = secretNumber * 10 + random.nextInt(9) + 1;
+        }
     }
 
     public int getSecretNumber() {
@@ -151,6 +156,4 @@ public class GameCore {
     public GameRecord getHistory(int index) {
         return histories.get(index);
     }
-
-
 }

@@ -37,4 +37,12 @@ public class GameRecord {
         return recordB;
     }
 
+    @Override
+    public String toString() {
+        return "GameRecord{" +
+                "number=" + number +
+                ", recordA=" + recordA +
+                ", recordB=" + recordB +
+                '}';
+    }
 }
