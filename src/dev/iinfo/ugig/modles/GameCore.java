@@ -68,7 +68,7 @@ public class GameCore {
      */
     public GameGuessResult guess(int guessNumber) throws IllegalArgumentException {
         if (guessNumber > 9999 || guessNumber < 1111) {
-            throw new IllegalArgumentException("illegal guess number");
+            throw new IllegalArgumentException("Illegal guess number");
         }
 
         // Guess totally right, game finished
@@ -93,6 +93,9 @@ public class GameCore {
         for (int i = 0; i < 4; i++) {
             secret[i] = (int) (secretNumber / Math.pow(10, 3 - i)) % 10;
             guess[i] = (int) (guessNumber / Math.pow(10, 3 - i)) % 10;
+            if (guess[i] == 0) {
+                throw new IllegalArgumentException("Illegal guess number");
+            }
             if (secret[i] == guess[i]) {
                 status[i] = true;
                 recordA++;
