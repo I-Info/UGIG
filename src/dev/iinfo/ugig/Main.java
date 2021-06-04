@@ -15,9 +15,9 @@ public class Main {
             int guessNumber;
             try {
                 String guess = sc.next();
-                if (guess.equals("exit"))
+                if (guess.equals("exit")) {
                     return;
-                else if (guess.equals("key")) {
+                } else if (guess.equals("key")) {
                     System.out.println("Secret:" + game.getSecretNumber());
                     continue;
                 }
