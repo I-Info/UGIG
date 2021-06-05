@@ -5,7 +5,7 @@ import dev.iinfo.ugig.modles.GameGuessResult;
 
 import java.util.Scanner;
 
-public class Main {
+public class MainCLI {
     public static void main(String[] args) {
         GameCore game = new GameCore(30);
         Scanner sc = new Scanner(System.in);

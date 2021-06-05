@@ -16,7 +16,7 @@ public class UGIG_StartGame {
         JFrame frame = new JFrame("UGIG");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        frame.setLayout(null);
+//        frame.setLayout();
 
         JLabel label1 = new JLabel();
         label1.setBounds(900,100,600,400);
@@ -62,8 +62,8 @@ public class UGIG_StartGame {
 
         field.setFocusable(true);
 
-        frame.setBounds(550,350,2200,1500);
-        frame.setResizable(false);
+        frame.setBounds(550,350,1000,800);
+//        frame.setResizable(false);
         frame.setVisible(true);
 
         GameCore gameCore = new GameCore(1000);
