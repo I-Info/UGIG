@@ -50,10 +50,8 @@ public class GameGuessResult {
 
     @Override
     public String toString() {
-        return "GameResult{" +
-                "number=" + number +
-                ", recordA=" + recordA +
-                ", recordB=" + recordB +
-                '}';
+        return "n=" + number +
+                ", A=" + recordA +
+                ", B=" + recordB;
     }
 }

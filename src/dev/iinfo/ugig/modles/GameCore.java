@@ -48,8 +48,9 @@ public class GameCore {
      * @throws IllegalArgumentException the maximum number cannot less than 1
      */
     public GameCore(int maxGuessTimes) throws IllegalArgumentException {
-        if (maxGuessTimes < 1)
+        if (maxGuessTimes < 1) {
             throw new IllegalArgumentException("the maximum number cannot less than 1");
+        }
         this.maxGuessTimes = maxGuessTimes;
         guessedTimes = 0;
         histories = new ArrayList<>();
@@ -113,8 +114,9 @@ public class GameCore {
 
         GameRecord gameRecord = new GameRecord(guessNumber, recordA, recordB);
         // Reached maximum guess times, game over
-        if (++guessedTimes >= maxGuessTimes)
+        if (++guessedTimes >= maxGuessTimes) {
             return new GameGuessResult(GameGuessResult.FAIL, gameRecord);
+        }
 
         // Standard guess situation
         histories.add(gameRecord);
@@ -133,8 +135,9 @@ public class GameCore {
      * restart the game
      */
     public void restart(int maxGuessTimes) throws IllegalArgumentException {
-        if (maxGuessTimes < 1)
+        if (maxGuessTimes < 1) {
             throw new IllegalArgumentException("the maximum number cannot less than 1");
+        }
         this.maxGuessTimes = maxGuessTimes;
         guessedTimes = 0;
         histories.clear();
