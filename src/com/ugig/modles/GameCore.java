@@ -1,4 +1,4 @@
-package dev.iinfo.ugig.modles;
+package com.ugig.modles;
 
 import java.util.ArrayList;
 import java.util.Random;

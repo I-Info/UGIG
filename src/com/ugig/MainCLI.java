@@ -1,11 +1,12 @@
-package dev.iinfo.ugig;
+package com.ugig;
 
-import dev.iinfo.ugig.modles.GameCore;
-import dev.iinfo.ugig.modles.GameGuessResult;
+import com.ugig.modles.GameCore;
+import com.ugig.modles.GameGuessResult;
 
 import java.util.Scanner;
 
-public class MainTest {
+
+public class MainCLI {
     public static void main(String[] args) {
         GameCore game = new GameCore(30);
         Scanner sc = new Scanner(System.in);

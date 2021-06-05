@@ -1,7 +1,7 @@
-package dev.iinfo.ugig;
+package com.ugig;
 
-import dev.iinfo.ugig.modles.GameCore;
-import dev.iinfo.ugig.modles.GameGuessResult;
+import com.ugig.modles.GameCore;
+import com.ugig.modles.GameGuessResult;
 
 import javax.swing.*;
 import java.awt.*;

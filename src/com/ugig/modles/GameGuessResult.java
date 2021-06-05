@@ -1,4 +1,4 @@
-package dev.iinfo.ugig.modles;
+package com.ugig.modles;
 
 /**
  * class for store guess result

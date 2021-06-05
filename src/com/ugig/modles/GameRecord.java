@@ -1,4 +1,4 @@
-package dev.iinfo.ugig.modles;
+package com.ugig.modles;
 
 public class GameRecord {
     final int number;
