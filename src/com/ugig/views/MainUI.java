@@ -1,4 +1,4 @@
-package com.ugig;
+package com.ugig.views;
 
 import com.ugig.modles.GameCore;
 import com.ugig.modles.GameGuessResult;
@@ -11,32 +11,27 @@ public class MainUI {
     private static final int DEFAULT_WINDOW_WIDTH = 400;
     private static final int DEFAULT_WINDOW_HEIGHT = 300;
 
-    private final JFrame mainWindow;
-    private final SpringLayout layout;
-    private final Container container;
     private final JTextField inputField;
-    private final JList<String> historyList;
     private final GameCore game;
     private final JLabel resultLabel;
     private final JLabel timeLabel;
-    private final JLabel startLabel;
     private final DefaultListModel<String> listModel;
 
 
     public MainUI() {
-        mainWindow = new JFrame("UGIG");
+        JFrame mainWindow = new JFrame("UGIG");
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        layout = new SpringLayout();
+        SpringLayout layout = new SpringLayout();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = screenSize.width / 2 - DEFAULT_WINDOW_WIDTH / 2;
         int y = screenSize.height / 2 - DEFAULT_WINDOW_HEIGHT / 2;
         mainWindow.setBounds(x, y, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         mainWindow.setMinimumSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
 
-        container = mainWindow.getContentPane();
+        Container container = mainWindow.getContentPane();
         container.setLayout(layout);
 
-        startLabel = new JLabel("You Guess I Guess");
+        JLabel startLabel = new JLabel("You Guess I Guess");
         container.add(startLabel);
         layout.putConstraint(SpringLayout.NORTH, startLabel, 20, SpringLayout.NORTH, container);
         layout.putConstraint(SpringLayout.WEST, startLabel, 20, SpringLayout.WEST, container);
@@ -68,7 +63,7 @@ public class MainUI {
 
 
         listModel = new DefaultListModel<>();
-        historyList = new JList<>();
+        JList<String> historyList = new JList<>();
         JScrollPane scrollPane = new JScrollPane(historyList);
         historyList.setModel(listModel);
         container.add(scrollPane);
@@ -110,7 +105,4 @@ public class MainUI {
 
     }
 
-    public static void main(String[] args) {
-        MainUI mainUI = new MainUI();
-    }
 }

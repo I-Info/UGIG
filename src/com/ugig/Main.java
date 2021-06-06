@@ -2,12 +2,21 @@ package com.ugig;
 
 import com.ugig.modles.GameCore;
 import com.ugig.modles.GameGuessResult;
+import com.ugig.views.MainUI;
 
 import java.util.Scanner;
 
 
-public class MainCLI {
+public class Main {
     public static void main(String[] args) {
+        if (args.length > 0 && args[0].equals("-CLI")) {
+            mainCLI();
+            return;
+        }
+        new MainUI();
+    }
+
+    public static void mainCLI() {
         GameCore game = new GameCore(30);
         Scanner sc = new Scanner(System.in);
         System.out.println("Game begin:");
@@ -31,13 +40,13 @@ public class MainCLI {
 
             if (result.getCode() == GameGuessResult.OK) {
                 System.out.println("Guess time:" + game.getGuessedTimes());
-                System.out.println(result.toString());
+                System.out.println(result);
             } else if (result.getCode() == GameGuessResult.DUPLICATE) {
                 System.out.println("Duplicate");
-                System.out.println(result.toString());
+                System.out.println(result);
             } else if (result.getCode() == GameGuessResult.SUCCESS) {
                 System.out.println("You win!");
-                System.out.println(result.toString());
+                System.out.println(result);
                 return;
             } else if (result.getCode() == GameGuessResult.FAIL) {
                 System.out.println("Game over");
@@ -46,6 +55,5 @@ public class MainCLI {
             }
 
         }
-
     }
 }
