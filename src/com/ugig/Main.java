@@ -2,7 +2,7 @@ package com.ugig;
 
 import com.ugig.modles.GameCore;
 import com.ugig.modles.GameGuessResult;
-import com.ugig.views.MainUI;
+import com.ugig.tests.TestView;
 
 import java.util.Scanner;
 
@@ -13,7 +13,9 @@ public class Main {
             mainCLI();
             return;
         }
-        new MainUI();
+//        new GameView();
+        TestView testView = new TestView("main");
+        testView.setVisible(true);
     }
 
     public static void mainCLI() {
