@@ -5,8 +5,12 @@ import com.ugig.modles.GameGuessResult;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class MainUI {
+public class GameView extends JFrame {
 
     private static final int DEFAULT_WINDOW_WIDTH = 400;
     private static final int DEFAULT_WINDOW_HEIGHT = 300;
@@ -16,19 +20,36 @@ public class MainUI {
     private final JLabel resultLabel;
     private final JLabel timeLabel;
     private final DefaultListModel<String> listModel;
+    private final JButton button;
+    private final int maxGuessTimes;
 
 
-    public MainUI() {
-        JFrame mainWindow = new JFrame("UGIG");
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public GameView(String title, JFrame previousView, int maxGuessTimes) throws IllegalArgumentException {
+        super(title);
+        if (maxGuessTimes < 1)
+            throw new IllegalArgumentException();
+        this.maxGuessTimes = maxGuessTimes;
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        //add closing event
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                previousView.setVisible(true);
+                resetGame();
+                dispose();
+            }
+        });
+
         SpringLayout layout = new SpringLayout();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = screenSize.width / 2 - DEFAULT_WINDOW_WIDTH / 2;
         int y = screenSize.height / 2 - DEFAULT_WINDOW_HEIGHT / 2;
-        mainWindow.setBounds(x, y, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-        mainWindow.setMinimumSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+        setBounds(x, y, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        setMinimumSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
 
-        Container container = mainWindow.getContentPane();
+        Container container = getContentPane();
         container.setLayout(layout);
 
         JLabel startLabel = new JLabel("You Guess I Guess");
@@ -43,17 +64,32 @@ public class MainUI {
         layout.putConstraint(SpringLayout.EAST, timeLabel, -20, SpringLayout.EAST, container);
 
 
-        inputField = new JTextField("1111");
+        inputField = new JTextField();
         container.add(inputField);
         layout.putConstraint(SpringLayout.NORTH, inputField, 30, SpringLayout.NORTH, startLabel);
         layout.putConstraint(SpringLayout.WEST, inputField, 20, SpringLayout.WEST, container);
         layout.putConstraint(SpringLayout.EAST, inputField, -20, SpringLayout.EAST, container);
+        inputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+                    guessAction();
+            }
+        });
 
-
-        JButton button = new JButton("Guess!");
+        button = new JButton("Guess!");
+        button.addActionListener(e -> guessAction());
         container.add(button);
         layout.putConstraint(SpringLayout.NORTH, button, 30, SpringLayout.NORTH, inputField);
         layout.putConstraint(SpringLayout.WEST, button, 20, SpringLayout.WEST, container);
+
+        JButton button = new JButton("Restart");
+        button.addActionListener(e -> resetGame());
+        container.add(button);
+        layout.putConstraint(SpringLayout.NORTH, button, 30, SpringLayout.NORTH, inputField);
+        layout.putConstraint(SpringLayout.EAST, button, -20, SpringLayout.EAST, container);
+
 
         resultLabel = new JLabel("", JLabel.CENTER);
         container.add(resultLabel);
@@ -72,15 +108,18 @@ public class MainUI {
         layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, container);
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -25, SpringLayout.SOUTH, container);
 
-        button.addActionListener(e -> guessAction());
 
-        game = new GameCore(30);
+        game = new GameCore(maxGuessTimes);
 
-        mainWindow.setVisible(true);
     }
 
-    public void guessAction() {
-        GameGuessResult result = null;
+    /**
+     * a basic guess action
+     */
+    private void guessAction() {
+        if (!button.isEnabled())
+            return;
+        GameGuessResult result;
         try {
             int guessNumber = Integer.parseInt(inputField.getText());
             result = game.guess(guessNumber);
@@ -88,21 +127,37 @@ public class MainUI {
             resultLabel.setText("Invalid input");
             return;
         }
+        inputField.setText("");
         assert (result != null);
         String text;
         switch (result.getCode()) {
             case GameGuessResult.OK -> {
-                text = result.toString();
+                text = game.getGuessedTimes() + ". " + result;
                 listModel.add(0, text);
-                timeLabel.setText("Guess time: "+game.getGuessedTimes());
+                timeLabel.setText("Guess time: " + game.getGuessedTimes());
             }
-            case GameGuessResult.SUCCESS -> text = "You Win!The secret number: " + result.getNumber();
-            case GameGuessResult.FAIL -> text = "Game over.";
+            case GameGuessResult.SUCCESS -> {
+                text = "You Win! The secret number: " + result.getNumber();
+                button.setEnabled(false);
+            }
+            case GameGuessResult.FAIL -> {
+                text = "Game over. The secret number: " + game.getSecretNumber();
+                button.setEnabled(false);
+            }
             case GameGuessResult.DUPLICATE -> text = "Already guessed: " + result;
             default -> throw new IllegalStateException("Unexpected value: " + result.getCode());
         }
         resultLabel.setText(text);
-
     }
+
+    private void resetGame() {
+        game.restart(maxGuessTimes);
+        listModel.clear();
+        resultLabel.setText("");
+        timeLabel.setText("");
+        inputField.setText("");
+        button.setEnabled(true);
+    }
+
 
 }
