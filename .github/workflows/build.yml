@@ -42,10 +42,11 @@ jobs:
           cd out
           jar cfvm ../game.jar ../src/META-INF/MANIFEST.MF $(find com -name "*.class")
           
-      - name: Publish Releases
+      - name: publish releases
         # You may pin to the exact commit or the version.
         # uses: marvinpinto/action-automatic-releases@526ce12c6675bbe6e0e9a4169c90d09a3f7ad3e2
         uses: marvinpinto/action-automatic-releases@v1.2.0
+        if: ${{github.event_name == 'push'}}
         with:
           # GitHub secret token
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
