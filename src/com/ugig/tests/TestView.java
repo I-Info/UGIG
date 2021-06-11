@@ -1,4 +1,6 @@
-package com.ugig.views;
+package com.ugig.tests;
+
+import com.ugig.views.GameView;
 
 import javax.swing.*;
 import java.awt.*;

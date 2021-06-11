@@ -2,8 +2,7 @@ package com.ugig;
 
 import com.ugig.modles.GameCore;
 import com.ugig.modles.GameGuessResult;
-import com.ugig.views.GameView;
-import com.ugig.views.TestView;
+import com.ugig.tests.TestView;
 
 import java.util.Scanner;
 

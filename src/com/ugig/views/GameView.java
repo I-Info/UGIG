@@ -10,6 +10,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * the main game window
+ * only can be construct once
+ * which means cannot modify after constructed
+ * it will try to show previous window then dispose itself,
+ * as this window is in closing
+ */
 public class GameView extends JFrame {
 
     private static final int DEFAULT_WINDOW_WIDTH = 400;
@@ -24,6 +31,12 @@ public class GameView extends JFrame {
     private final int maxGuessTimes;
 
 
+    /**
+     * @param title         the window's title
+     * @param previousView  previous window
+     * @param maxGuessTimes set the max number of guess
+     * @throws IllegalArgumentException illegal max guess time
+     */
     public GameView(String title, JFrame previousView, int maxGuessTimes) throws IllegalArgumentException {
         super(title);
         if (maxGuessTimes < 1)
@@ -31,16 +44,6 @@ public class GameView extends JFrame {
         this.maxGuessTimes = maxGuessTimes;
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        //add closing event
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                previousView.setVisible(true);
-                resetGame();
-                dispose();
-            }
-        });
 
         SpringLayout layout = new SpringLayout();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -51,6 +54,20 @@ public class GameView extends JFrame {
 
         Container container = getContentPane();
         container.setLayout(layout);
+
+        //add closing event
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                if (JOptionPane.showConfirmDialog(container, "Confirm exit?", "Exit", JOptionPane.YES_NO_OPTION)
+                        == JOptionPane.YES_OPTION)
+                    previousView.setVisible(true);
+                resetGame();
+                dispose();
+            }
+        });
+
 
         JLabel startLabel = new JLabel("You Guess I Guess");
         container.add(startLabel);
@@ -85,7 +102,11 @@ public class GameView extends JFrame {
         layout.putConstraint(SpringLayout.WEST, button, 20, SpringLayout.WEST, container);
 
         JButton button = new JButton("Restart");
-        button.addActionListener(e -> resetGame());
+        button.addActionListener(e -> {
+            if (JOptionPane.showConfirmDialog(container, "Confirm restart?", "Restart", JOptionPane.YES_NO_OPTION)
+                    == JOptionPane.YES_OPTION)
+                resetGame();
+        });
         container.add(button);
         layout.putConstraint(SpringLayout.NORTH, button, 30, SpringLayout.NORTH, inputField);
         layout.putConstraint(SpringLayout.EAST, button, -20, SpringLayout.EAST, container);
@@ -108,9 +129,7 @@ public class GameView extends JFrame {
         layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, container);
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -25, SpringLayout.SOUTH, container);
 
-
         game = new GameCore(maxGuessTimes);
-
     }
 
     /**
@@ -134,14 +153,16 @@ public class GameView extends JFrame {
             case GameGuessResult.OK -> {
                 text = game.getGuessedTimes() + ". " + result;
                 listModel.add(0, text);
-                timeLabel.setText("Guess time: " + game.getGuessedTimes());
+                timeLabel.setText("Remain: " + (maxGuessTimes - game.getGuessedTimes()));
             }
             case GameGuessResult.SUCCESS -> {
                 text = "You Win! The secret number: " + result.getNumber();
+                timeLabel.setText("");
                 button.setEnabled(false);
             }
             case GameGuessResult.FAIL -> {
                 text = "Game over. The secret number: " + game.getSecretNumber();
+                timeLabel.setText("");
                 button.setEnabled(false);
             }
             case GameGuessResult.DUPLICATE -> text = "Already guessed: " + result;
@@ -150,6 +171,9 @@ public class GameView extends JFrame {
         resultLabel.setText(text);
     }
 
+    /**
+     * restart the game
+     */
     private void resetGame() {
         game.restart(maxGuessTimes);
         listModel.clear();
