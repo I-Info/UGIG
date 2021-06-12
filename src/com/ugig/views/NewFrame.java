@@ -3,9 +3,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 public class NewFrame extends JFrame implements ActionListener {
     public NewFrame() {
+        JFrame JF = this;
         setLayout(null);
         Container container = getContentPane();
         JPanel panel1 = new JPanel();
@@ -31,7 +36,7 @@ public class NewFrame extends JFrame implements ActionListener {
         StartBotton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainUI();
+                new GameView("UGIG", JF, 30).setVisible(true);
                 setVisible(false);
             }
         });
@@ -49,10 +54,16 @@ public class NewFrame extends JFrame implements ActionListener {
 }
     class RuleDialogDemo  extends JDialog{
         public RuleDialogDemo(){
-            JTextArea jTextArea=new JTextArea("");
+            //                FileReader fileReader =new FileReader("GameRules.docx");
+//                String Rules=fileReader.toString();
+            JTextArea jTextArea=new JTextArea();
+            jTextArea.setFont(new Font("微软雅黑",0,10));
+            jTextArea.setLayout(new FlowLayout());
+            this.add(jTextArea);
             setVisible(true);
-            setBounds(100,500,100,100);
+            setBounds(100,500,500,500);
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         }
 
 
