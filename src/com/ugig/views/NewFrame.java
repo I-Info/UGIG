@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 public class NewFrame extends JFrame implements ActionListener {
     public NewFrame() {
+        this.setBounds(600, 200, 400, 500);
         JFrame JF = this;
         setLayout(null);
         Container container = getContentPane();
@@ -26,7 +27,7 @@ public class NewFrame extends JFrame implements ActionListener {
         panel1.add(StartBotton, BorderLayout.NORTH);
         panel1.add(RuleBotton, BorderLayout.SOUTH);
         label1.setBounds(150, 8, 100, 100);
-        panel1.setBounds(50, 100, 300, 200);
+        panel1.setBounds(45, 100, 300, 200);
         this.add(panel1, BorderLayout.CENTER);
         this.add(label1);
         setResizable(false);
@@ -51,20 +52,6 @@ public class NewFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
     }
-}
-    class RuleDialogDemo  extends JDialog{
-        public RuleDialogDemo(){
-            //                FileReader fileReader =new FileReader("GameRules.docx");
-//                String Rules=fileReader.toString();
-            JTextArea jTextArea=new JTextArea();
-            jTextArea.setFont(new Font("微软雅黑",0,10));
-            jTextArea.setLayout(new FlowLayout());
-            this.add(jTextArea);
-            setVisible(true);
-            setBounds(100,500,500,500);
-            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        }
 
 
     public static void main(String[] args) {
