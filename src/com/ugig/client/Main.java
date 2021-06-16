@@ -1,8 +1,8 @@
-package com.ugig;
+package com.ugig.client;
 
-import com.ugig.modles.GameCore;
+import com.ugig.modles.GameEngine;
 import com.ugig.modles.GameGuessResult;
-import com.ugig.views.MainFrame;
+import com.ugig.client.views.MainFrame;
 
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class Main {
     }
 
     public static void mainCLI() {
-        GameCore game = new GameCore(30);
+        GameEngine game = new GameEngine(30);
         Scanner sc = new Scanner(System.in);
         System.out.println("Game begin:");
         GameGuessResult result;

@@ -1,6 +1,6 @@
-package com.ugig.views;
+package com.ugig.client.views;
 
-import com.ugig.modles.GameCore;
+import com.ugig.modles.GameEngine;
 import com.ugig.modles.GameGuessResult;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class GameView extends JFrame {
     private static final int DEFAULT_WINDOW_HEIGHT = 300;
 
     private final JTextField inputField;
-    private final GameCore game;
+    private final GameEngine game;
     private final JLabel resultLabel;
     private final JLabel timeLabel;
     private final DefaultListModel<String> listModel;
@@ -129,7 +129,7 @@ public class GameView extends JFrame {
         layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, container);
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -25, SpringLayout.SOUTH, container);
 
-        game = new GameCore(maxGuessTimes);
+        game = new GameEngine(maxGuessTimes);
     }
 
     /**

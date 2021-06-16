@@ -1,4 +1,4 @@
-package com.ugig.views;
+package com.ugig.client.views;
 
 import javax.swing.*;
 import java.awt.*;

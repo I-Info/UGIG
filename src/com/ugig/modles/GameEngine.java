@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * the core of the guess number game
  */
-public class GameCore {
+public class GameEngine {
 
     /**
      * const default max try times
@@ -37,7 +37,7 @@ public class GameCore {
     /**
      * Default constructor
      */
-    public GameCore() {
+    public GameEngine() {
         this(DEFAULT_MAX_TIMES);
     }
 
@@ -47,7 +47,7 @@ public class GameCore {
      * @param maxGuessTimes the maximum number of guess
      * @throws IllegalArgumentException the maximum number cannot less than 1
      */
-    public GameCore(int maxGuessTimes) throws IllegalArgumentException {
+    public GameEngine(int maxGuessTimes) throws IllegalArgumentException {
         if (maxGuessTimes < 1) {
             throw new IllegalArgumentException("the maximum number cannot less than 1");
         }
