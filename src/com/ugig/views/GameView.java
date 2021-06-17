@@ -29,6 +29,8 @@ public class GameView extends JFrame{
     private final Timer GameTimer;
     private boolean StartGame=false;
     private int RemainTime;
+    private int maxTime;
+    private JLabel ReMainTimelable;
 
 
     /**
@@ -40,6 +42,7 @@ public class GameView extends JFrame{
     public GameView(String title, JFrame previousView, int maxGuessTimes,int maxTime) throws IllegalArgumentException {
         super(title);
         this.RemainTime = maxTime;
+        this.maxTime = maxTime;
         if (maxGuessTimes < 1)
             throw new IllegalArgumentException();
         this.maxGuessTimes = maxGuessTimes;
@@ -101,9 +104,8 @@ public class GameView extends JFrame{
         layout.putConstraint(SpringLayout.NORTH, button, 30, SpringLayout.NORTH, inputField);
         layout.putConstraint(SpringLayout.WEST, button, 20, SpringLayout.WEST, container);
 
-        JLabel ReMainTimelable = new JLabel();
+        ReMainTimelable = new JLabel();
         ReMainTimelable.setBounds(300, 200, 10, 10);
-        ReMainTimelable.setVisible(true);
         this.add(ReMainTimelable);
 
         GameTimer = new Timer(1000, new ActionListener() {
@@ -115,6 +117,7 @@ public class GameView extends JFrame{
                 else {
                     resultLabel.setText("Your GameTime is over");
                     button.setEnabled(false);
+                    ReMainTimelable.setText("");
                 }
             }
         });
@@ -206,6 +209,9 @@ public class GameView extends JFrame{
         button.setEnabled(true);
         GameTimer.stop();
         StartGame=false;
+        RemainTime=maxTime;
+        ReMainTimelable.setText("");
+
 
     }
 
