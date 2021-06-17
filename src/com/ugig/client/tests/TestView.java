@@ -1,6 +1,6 @@
-package com.ugig.tests;
+package com.ugig.client.tests;
 
-import com.ugig.views.GameView;
+import com.ugig.client.views.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class TestView extends JFrame {
         Container container = getContentPane();
         JButton button = new JButton("run");
         button.addActionListener(e -> {
-            new GameView("Game", this, 10).setVisible(true);
+            new GameView("Game", this, 10, 10).setVisible(true);
             setVisible(false);
         });
         container.add(button);

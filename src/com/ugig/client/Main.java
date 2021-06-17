@@ -1,8 +1,8 @@
-package com.ugig;
+package com.ugig.client;
 
-import com.ugig.modles.GameCore;
+import com.ugig.client.views.MainView;
+import com.ugig.modles.GameEngine;
 import com.ugig.modles.GameGuessResult;
-import com.ugig.views.MainFrame;
 
 import java.util.Scanner;
 
@@ -13,11 +13,11 @@ public class Main {
             mainCLI();
             return;
         }
-        new MainFrame();
+        new MainView();
     }
 
     public static void mainCLI() {
-        GameCore game = new GameCore(30);
+        GameEngine game = new GameEngine(30);
         Scanner sc = new Scanner(System.in);
         System.out.println("Game begin:");
         GameGuessResult result;
@@ -53,7 +53,6 @@ public class Main {
                 System.out.println("Secret number: " + game.getSecretNumber());
                 return;
             }
-
         }
     }
 }

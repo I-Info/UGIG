@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * the core of the guess number game
  */
-public class GameCore {
+public class GameEngine {
 
     /**
      * const default max try times
@@ -37,7 +37,7 @@ public class GameCore {
     /**
      * Default constructor
      */
-    public GameCore() {
+    public GameEngine() {
         this(DEFAULT_MAX_TIMES);
     }
 
@@ -47,18 +47,9 @@ public class GameCore {
      * @param maxGuessTimes the maximum number of guess
      * @throws IllegalArgumentException the maximum number cannot less than 1
      */
-    public GameCore(int maxGuessTimes) throws IllegalArgumentException {
-        if (maxGuessTimes < 1) {
-            throw new IllegalArgumentException("the maximum number cannot less than 1");
-        }
-        this.maxGuessTimes = maxGuessTimes;
-        guessedTimes = 0;
+    public GameEngine(int maxGuessTimes) throws IllegalArgumentException {
         histories = new ArrayList<>();
-        Random random = new Random();
-        secretNumber = 0;
-        for (int i = 0; i < 4; i++) {
-            secretNumber = secretNumber * 10 + random.nextInt(9) + 1;
-        }
+        restart(maxGuessTimes);
     }
 
 
@@ -69,7 +60,7 @@ public class GameCore {
      */
     public GameGuessResult guess(int guessNumber) throws IllegalArgumentException {
         if (guessNumber > 9999 || guessNumber < 1111) {
-            throw new IllegalArgumentException("Illegal guess number");
+            throw new IllegalArgumentException("Illegal guess number range");
         }
 
         // Guess totally right, game finished
@@ -90,11 +81,12 @@ public class GameCore {
         int recordB = 0;
         int[] secret = new int[4];
         int[] guess = new int[4];
+        boolean[] map = new boolean[10];
         // Restore int to int[] and check A
         for (int i = 0; i < 4; i++) {
             secret[i] = (int) (secretNumber / Math.pow(10, 3 - i)) % 10;
             guess[i] = (int) (guessNumber / Math.pow(10, 3 - i)) % 10;
-            if (guess[i] == 0) {
+            if (guess[i] == 0 || (map[guess[i]] || !(map[guess[i]] = true))) {
                 throw new IllegalArgumentException("Illegal guess number");
             }
             if (secret[i] == guess[i]) {
@@ -143,9 +135,16 @@ public class GameCore {
         histories.clear();
         Random random = new Random();
         secretNumber = 0;
-        for (int i = 0; i < 4; i++) {
-            secretNumber = secretNumber * 10 + random.nextInt(9) + 1;
+        boolean[] map = new boolean[10];
+        int i = 0;
+        while (i < 4) {
+            int rand = random.nextInt(9) + 1;
+            if (!map[rand] && (map[rand] = true)) {
+                secretNumber = secretNumber * 10 + rand;
+                i++;
+            }
         }
+//        System.out.println(secretNumber);
     }
 
     public int getSecretNumber() {
