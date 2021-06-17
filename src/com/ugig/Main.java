@@ -53,7 +53,6 @@ public class Main {
                 System.out.println("Secret number: " + game.getSecretNumber());
                 return;
             }
-
         }
     }
 }

@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
     public MainFrame() {
-        this.setBounds(600, 500, 400, 500);
-        JFrame JF = this;
+        this.setBounds(400, 200, 400, 500);
+
         setLayout(null);
         JPanel panel1 = new JPanel();
         Label label1 = new Label("UGIG");
@@ -29,11 +29,10 @@ public class MainFrame extends JFrame {
         setSize(400, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         StartBotton.addActionListener(e -> {
-            new GameView("UGIG", JF, 30).setVisible(true);
+            new Difficulty().setVisible(true);
             setVisible(false);
         });
         RuleBotton.addActionListener(e -> new RuleDialog());
     }
-
 }
 
