@@ -5,8 +5,8 @@ import javax.swing.event.MenuListener;
 import java.awt.*;
 public class MainFrame extends JFrame {
     public MainFrame() {
-        this.setBounds(600, 500, 400, 500);
-        JFrame JF = this;
+        this.setBounds(400, 200, 400, 500);
+
         setLayout(null);
         JMenuBar jMenuBar=new JMenuBar();
         JMenu AboutUs=new JMenu("关于我们");
@@ -45,12 +45,10 @@ public class MainFrame extends JFrame {
             }
         });
         StartBotton.addActionListener(e -> {
-            new GameView("UGIG", JF, 30,10).setVisible(true);
+            new Difficulty().setVisible(true);
             setVisible(false);
         });
         RuleBotton.addActionListener(e -> new RuleDialog());
     }
-
-
 }
 
