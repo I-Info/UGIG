@@ -1,8 +1,8 @@
 package com.ugig.client;
 
+import com.ugig.client.views.MainFrame;
 import com.ugig.modles.GameEngine;
 import com.ugig.modles.GameGuessResult;
-import com.ugig.client.views.MainFrame;
 
 import java.util.Scanner;
 

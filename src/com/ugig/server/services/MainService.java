@@ -1,17 +1,22 @@
 package com.ugig.server.services;
 
+import com.ugig.server.controllers.AbstractHandler;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainService {
     private final ServerSocket server;
     private final ExecutorService executors;
+    private final HashMap<Integer, AbstractHandler> handlers;
 
 
-    public MainService(int port) throws IOException {
+    public MainService(int port, HashMap<Integer, AbstractHandler> handlers) throws IOException {
+        this.handlers = handlers;
         executors = Executors.newCachedThreadPool(); // 初始化线程池
 
         //启动服务器，开始监听
@@ -26,6 +31,8 @@ public class MainService {
                 try {
                     Socket conn = server.accept();
                     System.out.println("[INFO]Client connected: " + conn.getRemoteSocketAddress());
+                    executors.execute(new Receiver(conn, this.handlers));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -44,5 +51,6 @@ public class MainService {
             System.out.println("Server closed");
         }));
     }
+
 
 }
