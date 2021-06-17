@@ -45,7 +45,7 @@ public class MainFrame extends JFrame {
             }
         });
         StartBotton.addActionListener(e -> {
-            new Difficulty().setVisible(true);
+            new Difficulty(this).setVisible(true);
             setVisible(false);
         });
         RuleBotton.addActionListener(e -> new RuleDialog());
