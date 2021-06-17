@@ -4,10 +4,9 @@ import com.ugig.modles.GameGuessResult;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * the main game window
  * only can be construct once
@@ -15,7 +14,7 @@ import java.awt.event.WindowEvent;
  * it will try to show previous window then dispose itself,
  * as this window is in closing
  */
-public class GameView extends JFrame {
+public class GameView extends JFrame{
 
     private static final int DEFAULT_WINDOW_WIDTH = 400;
     private static final int DEFAULT_WINDOW_HEIGHT = 300;
@@ -27,6 +26,9 @@ public class GameView extends JFrame {
     private final DefaultListModel<String> listModel;
     private final JButton button;
     private final int maxGuessTimes;
+    private final Timer GameTimer;
+    private boolean StartGame=false;
+    private int RemainTime;
 
 
     /**
@@ -35,14 +37,13 @@ public class GameView extends JFrame {
      * @param maxGuessTimes set the max number of guess
      * @throws IllegalArgumentException illegal max guess time
      */
-    public GameView(String title, JFrame previousView, int maxGuessTimes) throws IllegalArgumentException {
+    public GameView(String title, JFrame previousView, int maxGuessTimes,int maxTime) throws IllegalArgumentException {
         super(title);
+        this.RemainTime = maxTime;
         if (maxGuessTimes < 1)
             throw new IllegalArgumentException();
         this.maxGuessTimes = maxGuessTimes;
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-
         SpringLayout layout = new SpringLayout();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = screenSize.width / 2 - DEFAULT_WINDOW_WIDTH / 2;
@@ -61,6 +62,7 @@ public class GameView extends JFrame {
                 if (JOptionPane.showConfirmDialog(container, "Confirm exit?", "Exit", JOptionPane.YES_NO_OPTION)
                         == JOptionPane.YES_OPTION)
                     previousView.setVisible(true);
+                GameTimer.stop();
                 resetGame();
                 dispose();
             }
@@ -99,6 +101,24 @@ public class GameView extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, button, 30, SpringLayout.NORTH, inputField);
         layout.putConstraint(SpringLayout.WEST, button, 20, SpringLayout.WEST, container);
 
+        JLabel ReMainTimelable = new JLabel();
+        ReMainTimelable.setBounds(300, 200, 10, 10);
+        ReMainTimelable.setVisible(true);
+        this.add(ReMainTimelable);
+
+        GameTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(RemainTime!=0) {
+                    ReMainTimelable.setText("Your RemainTime: "+RemainTime-- + "");
+                }
+                else {
+                    resultLabel.setText("Your GameTime is over");
+                    button.setEnabled(false);
+                }
+            }
+        });
+
         JButton button = new JButton("Restart");
         button.addActionListener(e -> {
             if (JOptionPane.showConfirmDialog(container, "Confirm restart?", "Restart", JOptionPane.YES_NO_OPTION)
@@ -126,16 +146,21 @@ public class GameView extends JFrame {
         layout.putConstraint(SpringLayout.WEST, scrollPane, 25, SpringLayout.WEST, container);
         layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, container);
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -25, SpringLayout.SOUTH, container);
-
         game = new GameCore(maxGuessTimes);
-    }
 
+
+    }
     /**
      * a basic guess action
      */
     private void guessAction() {
+
         if (!button.isEnabled())
             return;
+        if (!StartGame){
+            StartGame=true;
+            GameTimer.start();
+        }
         GameGuessResult result;
         try {
             int guessNumber = Integer.parseInt(inputField.getText());
@@ -179,7 +204,9 @@ public class GameView extends JFrame {
         timeLabel.setText("");
         inputField.setText("");
         button.setEnabled(true);
-    }
+        GameTimer.stop();
+        StartGame=false;
 
+    }
 
 }

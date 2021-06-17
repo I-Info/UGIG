@@ -14,7 +14,7 @@ public class TestView extends JFrame {
         Container container = getContentPane();
         JButton button = new JButton("run");
         button.addActionListener(e -> {
-            new GameView("Game", this, 10).setVisible(true);
+            new GameView("Game", this, 10,10).setVisible(true);
             setVisible(false);
         });
         container.add(button);

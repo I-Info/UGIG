@@ -36,7 +36,6 @@ public class MainFrame extends JFrame {
             @Override
             public void menuSelected(MenuEvent e) {
                     new AboutUsDialog();
-
             }
             @Override
             public void menuDeselected(MenuEvent e) {
@@ -46,7 +45,7 @@ public class MainFrame extends JFrame {
             }
         });
         StartBotton.addActionListener(e -> {
-            new GameView("UGIG", JF, 30).setVisible(true);
+            new GameView("UGIG", JF, 30,10).setVisible(true);
             setVisible(false);
         });
         RuleBotton.addActionListener(e -> new RuleDialog());
