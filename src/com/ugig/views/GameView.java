@@ -1,5 +1,4 @@
 package com.ugig.views;
-
 import com.ugig.modles.GameCore;
 import com.ugig.modles.GameGuessResult;
 
@@ -9,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 /**
  * the main game window
  * only can be construct once
