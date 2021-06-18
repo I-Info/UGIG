@@ -114,7 +114,7 @@ public class GameView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (remainTime > 0) {
-                    remainTimeLabel.setText("Your RemainTime: " + remainTime-- + " s");
+                    remainTimeLabel.setText("Your remainTime: " + remainTime-- + " s");
                 } else {
                     resultLabel.setText("Game over. The secret number: " + game.getSecretNumber());
                     button.setEnabled(false);
@@ -178,7 +178,7 @@ public class GameView extends JFrame {
             case GameGuessResult.OK -> {
                 text = game.getGuessedTimes() + ". " + result;
                 listModel.add(0, text);
-                timeLabel.setText("Remain: " + (maxGuessTimes - game.getGuessedTimes()));
+                timeLabel.setText("Guess Remain: " + (maxGuessTimes - game.getGuessedTimes()));
                 if (!startGame && maxTime > 0) {
                     startGame = true;
                     gameTimer.start();
@@ -187,11 +187,15 @@ public class GameView extends JFrame {
             case GameGuessResult.SUCCESS -> {
                 text = "You Win! The secret number: " + result.getNumber();
                 timeLabel.setText("");
+                gameTimer.stop();
+                remainTimeLabel.setText("");
                 button.setEnabled(false);
             }
             case GameGuessResult.FAIL -> {
                 text = "Game over. The secret number: " + game.getSecretNumber();
                 timeLabel.setText("");
+                gameTimer.stop();
+                remainTimeLabel.setText("");
                 button.setEnabled(false);
             }
             case GameGuessResult.DUPLICATE -> text = "Already guessed: " + result;
