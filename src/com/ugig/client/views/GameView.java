@@ -114,7 +114,7 @@ public class GameView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (remainTime > 0) {
-                    remainTimeLabel.setText("Your RemainTime: " + remainTime-- + " s");
+                    remainTimeLabel.setText("Your remainTime: " + remainTime-- + " s");
                 } else {
                     resultLabel.setText("Game over. The secret number: " + game.getSecretNumber());
                     button.setEnabled(false);
