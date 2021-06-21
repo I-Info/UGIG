@@ -65,11 +65,12 @@ public class GameView extends JFrame {
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
                 if (JOptionPane.showConfirmDialog(container, "Confirm exit?", "Exit", JOptionPane.YES_NO_OPTION)
-                        == JOptionPane.YES_OPTION)
+                        == JOptionPane.YES_OPTION) {
                     previousView.setVisible(true);
-                gameTimer.stop();
-                resetGame();
-                dispose();
+                    gameTimer.stop();
+                    resetGame();
+                    dispose();
+                }
             }
         });
 
