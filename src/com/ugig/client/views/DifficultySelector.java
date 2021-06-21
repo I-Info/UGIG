@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 
 public class DifficultySelector extends JFrame {
     boolean flag = false;
-    int gameChanges;
+    int gameChanges = 50;
     int gameRemainTime;
 
     public DifficultySelector(JFrame jf) {
@@ -41,6 +41,7 @@ public class DifficultySelector extends JFrame {
         JRadioButton butt1 = new JRadioButton("50次");
         JRadioButton butt2 = new JRadioButton("30次");
         JRadioButton butt3 = new JRadioButton("15次");
+        butt1.setSelected(true);
         group2.add(butt1);
         group2.add(butt2);
         group2.add(butt3);
@@ -87,6 +88,8 @@ public class DifficultySelector extends JFrame {
                     button1.setEnabled(false);
                     button2.setEnabled(false);
                     button3.setEnabled(false);
+                    button1.setSelected(false);
+                    gameRemainTime = 0;
                 }
                 flag = false;
             }
@@ -96,6 +99,8 @@ public class DifficultySelector extends JFrame {
                 button1.setEnabled(true);
                 button2.setEnabled(true);
                 button3.setEnabled(true);
+                button1.setSelected(true);
+                gameRemainTime = 300;
             }
             flag = true;
         });
